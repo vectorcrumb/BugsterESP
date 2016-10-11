@@ -39,6 +39,20 @@ function saveCode2() {
     //doesn't save if the user quits the save prompt
     if(fileName){
         var blob = new Blob([Blockly.Arduino.workspaceToCode()], {type: 'text/plain;charset=utf-8'});
+        var formData = new FormData();
+        formData.append('ino_code',blob);
+        $.ajax('/upload.php', {
+            method: "POST",
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function (data) {
+                console.log(data);
+            },
+            error: function (data) {
+                console.log("Error");
+            }
+        });
         saveAs(blob, fileName + '.ino');
     }
 }
