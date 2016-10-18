@@ -43,7 +43,7 @@ function saveCode2() {
     if(fileName){
         var blob = new Blob([Blockly.Arduino.workspaceToCode()], {type: 'text/plain;charset=utf-8'});
         var formData = new FormData();
-        formData.append('ino_code', blob);
+        formData.append('inoCode', blob);
         xhr.open('POST', 'upload2.php', true);
         xhr.send(formData);
         // $.ajax('/upload.php', {
