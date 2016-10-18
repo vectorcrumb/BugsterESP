@@ -1,9 +1,9 @@
 <?php
-define("UPLOAD_DIR", "/tmp/bugdata");
+define("UPLOAD_DIR", "/tmp/bugdata/");
 
 if (!empty($_FILES["inoCode"])) {
 	$inoCode = $_FILES["inoCode"];
-	
+
 	// Check for no errors
 	if ($inoCode["error"] !== UPLOAD_ERR_OK) {
 		echo "<p>An error ocurred.</p>";
