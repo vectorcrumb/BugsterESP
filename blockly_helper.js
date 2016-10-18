@@ -31,6 +31,9 @@ function restore_blocks() {
   }
 }
 
+
+var xhr = new XMLHttpRequest();
+
 /**
  * Save Arduino generated code to local file.
  */
@@ -40,28 +43,38 @@ function saveCode2() {
     if(fileName){
         var blob = new Blob([Blockly.Arduino.workspaceToCode()], {type: 'text/plain;charset=utf-8'});
         var formData = new FormData();
-        formData.append('ino_code',blob);
-        $.ajax('/upload.php', {
-            method: "POST",
-            data: formData,
-            processData: false,
-            contentType: false,
-            success: function (data) {
-                console.log(data);
-            },
-            error: function (data) {
-                console.log("Error");
-            }
-        });
-        saveAs(blob, fileName + '.ino');
+        formData.append('ino_code', blob);
+        xhr.open('POST', 'upload2.php', true);
+        xhr.send(formData);
+        // $.ajax('/upload.php', {
+        //     method: "POST",
+        //     data: formData,
+        //     processData: false,
+        //     contentType: false,
+        //     success: function (data) {
+        //         console.log(data);
+        //     },
+        //     error: function (data) {
+        //         console.log("Error");
+        //     }
+        // });
+        // saveAs(blob, fileName + '.ino');
     }
 }
+
+xhr.onload = function() {
+    if (xhr.status === 200){
+        console.log("Uploaded to server");
+    } else {
+        console.log("Uploading failed");
+    }
+};
 
 /**
 * Save Arduino generated code to local file.
 */
 function saveCode() {
-  var fileName = window.prompt('What would you like to name your file?', 'BlocklyDuino')
+  var fileName = window.prompt('What would you like to name your file?', 'BlocklyDuino');
   //doesn't save if the user quits the save prompt
   if(fileName){
     var blob = new Blob([Blockly.Arduino.workspaceToCode()], {type: 'text/plain;charset=utf-8'});
@@ -263,7 +276,7 @@ function uploadCode(code, callback) {
         default:
             errorInfo = "code " + status + "\n\nUnknown error.";
             break;
-        };
+        }
         
         callback(status, errorInfo);
     };
@@ -293,7 +306,7 @@ function resetClick() {
     // var code = "";
     $.get('template.txt', function(data) {
         if (data) {
-            alert("Obtained data!")
+            alert("Obtained data!");
             code = data;
         } else {
             alert("Error reading code template!")
