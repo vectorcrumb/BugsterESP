@@ -11,7 +11,7 @@ if (!empty($_FILES["inoCode"])) {
 		exit;
 	}
 	// Ensure safe filename
-	$name = preg_replace("/[^A-Z0-9._-]/i", "_", inoCode["name"]);
+	// $name = preg_replace("/[^A-Z0-9._-]/i", "_", inoCode["name"]);
 	// Don't overwrite existing file
 	$i = 0;
 	$parts = pathinfo($name);
