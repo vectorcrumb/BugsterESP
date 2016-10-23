@@ -27,3 +27,4 @@ if (!empty($_FILES["inoCode"])) {
 	// Set proper permissions on new file
 	chmod(UPLOAD_DIR . $name, 0644);
 }
+?>
