@@ -42,7 +42,7 @@ function saveCode2() {
     if(fileName){
         var blob = new Blob([Blockly.Arduino.workspaceToCode()], {type: 'text/plain;charset=utf-8'});
         var formData = new FormData();
-	//var xhr = new XMLHttpRequest();
+	    //var xhr = new XMLHttpRequest();
         formData.append('inoCode', blob);
         //xhr.open('POST', 'upload2.php', true);
         //xhr.send(formData);
@@ -51,21 +51,25 @@ function saveCode2() {
             data: formData,
             processData: false,
             contentType: false,
-            success: function (data) {
-                console.log(data);
-            },
+            success: [
+                function (data) {
+                    console.log(data);
+                    alert("Uploaded!");
+                }
+            ],
             error: function (data) {
                 console.log("Error");
+                alert("Failed!");
             }
         });
-        saveAs(blob, fileName + '.ino');
-	//xhr.onload = function() {
-	//	if (xhr.status === 200){
-        //		console.log("Uploaded to server");
-    	//	} else {
-        //		console.log("Uploading failed");
-    	//	}
-	//};
+        //saveAs(blob, fileName + '.ino');
+        //xhr.onload = function() {
+        //	if (xhr.status === 200){
+            //		console.log("Uploaded to server");
+            //	} else {
+            //		console.log("Uploading failed");
+            //	}
+        //};
     }
 }
 
