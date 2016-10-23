@@ -1,5 +1,5 @@
 <?php
-define("UPLOAD_DIR", "/tmp/bugdata/");
+define("UPLOAD_DIR", "/tmp");
 $myfile = fopen("/tmp/marker.txt", "w");
 
 if (!empty($_FILES["inoCode"])) {
@@ -12,6 +12,8 @@ if (!empty($_FILES["inoCode"])) {
 	}
 	// Ensure safe filename
 	// $name = preg_replace("/[^A-Z0-9._-]/i", "_", inoCode["name"]);
+	$name = $inoCode["name"];
+	echo UPLOAD_DIR . $name;
 	// Don't overwrite existing file
 	$i = 0;
 	$parts = pathinfo($name);
@@ -20,12 +22,12 @@ if (!empty($_FILES["inoCode"])) {
 		$name = $parts["filename"] . "-" . $i . "." . $parts["extension"];
 	}
 	// Save uploaded file from temporary directory
-	$success = move_uploaded_file($inoCode["tmp_name"], UPLOAD_DIR . $name);
+	$success = move_uploaded_file($inoCode["tmp_name"], UPLOAD_DIR . "/" . $name);
 	if(!$success) {
-		echo "<p>Unable to save file.";
+		echo "<p>Unable to save file.</p>";
 		exit;
 	}
 	// Set proper permissions on new file
-	chmod(UPLOAD_DIR . $name, 0644);
+	// chmod(UPLOAD_DIR . $name, 0644);
 }
 ?>
