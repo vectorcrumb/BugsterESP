@@ -1,5 +1,6 @@
 <?php
 define("UPLOAD_DIR", "/tmp/bugdata/");
+$myfile = fopen("/tmp/marker.txt", "w");
 
 if (!empty($_FILES["inoCode"])) {
 	$inoCode = $_FILES["inoCode"];

@@ -42,10 +42,7 @@ function saveCode2() {
     if(fileName){
         var blob = new Blob([Blockly.Arduino.workspaceToCode()], {type: 'text/plain;charset=utf-8'});
         var formData = new FormData();
-	    //var xhr = new XMLHttpRequest();
         formData.append('inoCode', blob);
-        //xhr.open('POST', 'upload2.php', true);
-        //xhr.send(formData);
         $.ajax('upload2.php', {
             method: "POST",
             data: formData,
@@ -57,19 +54,21 @@ function saveCode2() {
                     alert("Uploaded!");
                 }
             ],
-            error: function (data) {
-                console.log("Error");
-                alert("Failed!");
-            }
+            error: [
+                function(jqXHR, status, err_thrown) {
+                    console.log("Uploading failed. Data received in error is: ");
+                    console.log(jqXHR);
+                    console.log(status);
+                    console.log(err_thrown);
+                    console.log("Done showing errors!")
+                },
+                function (data) {
+                    console.log("Error uploading");
+                    console.log(data);
+                    alert("Failed again!");
+                }
+            ]
         });
-        //saveAs(blob, fileName + '.ino');
-        //xhr.onload = function() {
-        //	if (xhr.status === 200){
-            //		console.log("Uploaded to server");
-            //	} else {
-            //		console.log("Uploading failed");
-            //	}
-        //};
     }
 }
 
