@@ -46,7 +46,7 @@ function saveCode2() {
         formData.append('inoCode', blob);
         //xhr.open('POST', 'upload2.php', true);
         //xhr.send(formData);
-        $.ajax('/upload2.php', {
+        $.ajax('upload2.php', {
             method: "POST",
             data: formData,
             processData: false,
