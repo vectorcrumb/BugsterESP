@@ -40,21 +40,26 @@ function saveCode2() {
     var fileName = 'ESP_CODE';
     //doesn't save if the user quits the save prompt
     if(fileName){
+        // Create blob with arduino code from workspace
         var blob = new Blob([Blockly.Arduino.workspaceToCode()], {type: 'text/plain;charset=utf-8'});
+        // Create formdata object and add blob with name and filename
         var formData = new FormData();
-        formData.append('inoCode', blob);
+        formData.append('inoCode', blob, "user_code.ino");
+        // Generate AJAX call to upload2.php
         $.ajax('upload2.php', {
             method: "POST",
             data: formData,
             processData: false,
             contentType: false,
             success: [
+                // Upon success, log and alert user
                 function (data) {
                     console.log(data);
                     alert("Uploaded!");
                 }
             ],
             error: [
+                // Upon error, show error message given by server, log data and alert user
                 function(jqXHR, status, err_thrown) {
                     console.log("Uploading failed. Data received in error is: ");
                     console.log(jqXHR);
@@ -65,7 +70,7 @@ function saveCode2() {
                 function (data) {
                     console.log("Error uploading");
                     console.log(data);
-                    alert("Failed again!");
+                    alert("Failed!");
                 }
             ]
         });
@@ -100,7 +105,7 @@ function save() {
   if(fileName){
     var blob = new Blob([data], {type: 'text/xml'});
     saveAs(blob, fileName + ".xml");
-  } 
+  }
 }
 
 /**
@@ -251,14 +256,14 @@ function uploadCode(code, callback) {
     var async = true;
 
     var request = new XMLHttpRequest();
-    
+
     request.onreadystatechange = function() {
-        if (request.readyState != 4) { 
-            return; 
+        if (request.readyState != 4) {
+            return;
         }
-        
+
         spinner.stop();
-        
+
         var status = parseInt(request.status); // HTTP response status, e.g., 200 for "200 OK"
         var errorInfo = null;
         switch (status) {
@@ -280,20 +285,20 @@ function uploadCode(code, callback) {
             errorInfo = "code " + status + "\n\nUnknown error.";
             break;
         }
-        
+
         callback(status, errorInfo);
     };
 
     request.open(method, url, async);
     request.setRequestHeader("Content-Type", "text/plain;charset=UTF-8");
-    request.send(code);	     
+    request.send(code);
 }
 
 function uploadClick() {
     var code = Blockly.Arduino.workspaceToCode();
 
     alert("Ready to upload to Arduino.");
-    
+
     uploadCode(code, function(status, errorInfo) {
         if (status == 200) {
             alert("Program uploaded ok");

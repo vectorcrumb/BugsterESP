@@ -1,6 +1,5 @@
 <?php
 define("UPLOAD_DIR", "/tmp");
-$myfile = fopen("/tmp/marker.txt", "w");
 
 if (!empty($_FILES["inoCode"])) {
 	$inoCode = $_FILES["inoCode"];
@@ -10,10 +9,9 @@ if (!empty($_FILES["inoCode"])) {
 		echo "<p>An error ocurred.</p>";
 		exit;
 	}
-	// Ensure safe filename
-	// $name = preg_replace("/[^A-Z0-9._-]/i", "_", inoCode["name"]);
+	// Obtain filename
 	$name = $inoCode["name"];
-	echo UPLOAD_DIR . $name;
+	// echo UPLOAD_DIR . $name;
 	// Don't overwrite existing file
 	$i = 0;
 	$parts = pathinfo($name);
