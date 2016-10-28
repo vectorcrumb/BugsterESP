@@ -1,17 +1,4 @@
 /**
- * Execute the user's code.
- * Just a quick and dirty eval.  No checks for infinite loops, etc.
- */
-function runJS() {
-  var code = Blockly.Generator.workspaceToCode('JavaScript');
-  try {
-    eval(code);
-  } catch (e) {
-    alert('Program error:\n' + e);
-  }
-}
-
-/**
  * Backup code blocks to localStorage.
  */
 function backup_blocks() {
@@ -31,12 +18,29 @@ function restore_blocks() {
   }
 }
 
+/*
+ * auto save and restore blocks
+ */
+function auto_save_and_restore_blocks() {
+    // Restore saved blocks in a separate thread so that subsequent
+    // initialization is not affected from a failed load.
+    window.setTimeout(restore_blocks, 0);
+    // Hook a save function onto unload.
+    bindEvent(window, 'unload', backup_blocks);
+    tabClick(selected);
 
+    // Init load event.
+    var loadInput = document.getElementById('load');
+    loadInput.addEventListener('change', load, false);
+    document.getElementById('fakeload').onclick = function() {
+        loadInput.click();
+    };
+}
 
 /**
- * Save Arduino generated code to local file.
+ * Save Arduino generated code to server
  */
-function saveCode2() {
+function saveCodeServer() {
     var fileName = 'ESP_CODE';
     //doesn't save if the user quits the save prompt
     if(fileName){
@@ -55,6 +59,7 @@ function saveCode2() {
                 // Upon success, log and alert user
                 function (data) {
                     console.log(data);
+                    console.log("Uploaded successfully!");
                     alert("Uploaded!");
                 }
             ],
@@ -152,25 +157,6 @@ function discard() {
     Blockly.mainWorkspace.clear();
     renderContent();
   }
-}
-
-/*
- * auto save and restore blocks
- */
-function auto_save_and_restore_blocks() {
-  // Restore saved blocks in a separate thread so that subsequent
-  // initialization is not affected from a failed load.
-  window.setTimeout(restore_blocks, 0);
-  // Hook a save function onto unload.
-  bindEvent(window, 'unload', backup_blocks);
-  tabClick(selected);
-
-  // Init load event.
-  var loadInput = document.getElementById('load');
-  loadInput.addEventListener('change', load, false);
-  document.getElementById('fakeload').onclick = function() {
-    loadInput.click();
-  };
 }
 
 /**
@@ -308,6 +294,10 @@ function uploadClick() {
     });
 }
 
+/***
+ * Reset will empty the window of blocks
+ */
+
 function resetClick() {
 
     var code = "void setup() {} void loop() {}";
@@ -318,12 +308,6 @@ function resetClick() {
             code = data;
         } else {
             alert("Error reading code template!")
-        }
-    });
-
-    uploadCode(code, function(status, errorInfo) {
-        if (status != 200) {
-            alert("Error resetting program: " + errorInfo);
         }
     });
 }

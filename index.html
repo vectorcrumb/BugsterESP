@@ -301,8 +301,8 @@ function init() {
             <td class="tabmin">&nbsp;</td>
             <td id="tab_xml" class="taboff" onclick="tabClick('xml')">XML</td>
             <td class="tabmax">
-              <button type="button" onclick="saveCode2()">Upload</button>
-              <button type="button" onclick="resetClick()">Reset</button>
+              <button type="button" onclick="saveCodeServer()">Upload to Bugster</button>
+              <button type="button" onclick="resetClick()">Reset blocks</button>
               <button onclick="discard()">Discard</button>
               <button onclick="saveCode()">Save Arduino Code</button>
               <input type="file" id="load" style="display: none;"/>
@@ -405,6 +405,9 @@ function init() {
         </value>
       </block>
       <block type="servo_read_degrees"></block>
+    </category>
+    <category name="Bugster">
+        <block type="base_bugster"></block>
     </category>
   </xml>
 </body>
