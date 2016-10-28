@@ -46,7 +46,7 @@ function saveCode2() {
         var formData = new FormData();
         formData.append('inoCode', blob, "user_code.ino");
         // Generate AJAX call to upload2.php
-        $.ajax('upload2.php', {
+        $.ajax('upload.php', {
             method: "POST",
             data: formData,
             processData: false,

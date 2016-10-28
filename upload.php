@@ -1,5 +1,5 @@
 <?php
-define("UPLOAD_DIR", "/tmp");
+define("UPLOAD_DIR", "/tmp/bugdata");
 
 if (!empty($_FILES["inoCode"])) {
 	$inoCode = $_FILES["inoCode"];
